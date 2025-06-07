@@ -5,10 +5,21 @@ services:
       context: .
       dockerfile: Dockerfile.bitbucket
     ports:
-      - "7990:7990"   # Web UI
-      - "7999:7999"   # Git SSH
+      - "7990:7990" # Web UI
+      - "7999:7999" # Git SSH
     volumes:
       - C:/DevOps/Bitbucket/data:/var/atlassian/application-data/bitbucket
+    networks:
+      - devops-net
+  bamboo:    
+    container_name: bamboo
+    build:
+      context: .
+      dockerfile: Dockerfile.bamboo
+    ports:
+      - "8085:8085" # Web UI
+    volumes:
+      - C:/DevOps/Bamboo/data:/var/atlassian/application-data/bamboo
     networks:
       - devops-net
 
