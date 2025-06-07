@@ -1,9 +1,7 @@
 services:
   bitbucket:
     container_name: bitbucket
-    build:
-      context: .
-      dockerfile: Dockerfile.bitbucket
+    image: atlassian/bitbucket:latest
     ports:
       - "7990:7990" # Web UI
       - "7999:7999" # Git SSH
@@ -15,9 +13,7 @@ services:
 
   bamboo:    
     container_name: bamboo
-    build:
-      context: .
-      dockerfile: Dockerfile.bamboo
+    image: atlassian/bamboo:latest
     ports:
       - "8085:8085" # Web UI
     volumes:
@@ -25,12 +21,10 @@ services:
     networks:
       - devops-net
     restart: unless-stopped
-    
+
   jfrog:
     container_name: jfrog
-    build:
-      context: .
-      dockerfile: Dockerfile.jfrog
+    image: releases-docker.jfrog.io/jfrog/artifactory-oss:latest
     ports:
       - "8081:8081" # Web UI
       - "8082:8082" # Repository Gateway

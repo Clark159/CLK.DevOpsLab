@@ -2,8 +2,8 @@
 setlocal enabledelayedexpansion
 
 :: ===== variables =====
-set enableBitbucket=false
-set enableBamboo=false
+set enableBitbucket=true
+set enableBamboo=true
 set enableJFrog=true
 
 :: ===== bitbucket =====
@@ -28,8 +28,14 @@ if /i "!enableBamboo!"=="true" (
 
 :: ===== jfrog =====
 if /i "!enableJFrog!"=="true" (
-  if not exist "C:\DevOps\JFrog\data" (
-    mkdir "C:\DevOps\JFrog\data"
+  if not exist "C:\DevOps\JFrog\data\etc\security" (
+    mkdir "C:\DevOps\JFrog\data\etc\security"
+  )
+  if not exist "C:\DevOps\JFrog\data\etc\security\master.key" (
+    powershell -Command "$key = -join ((65..70)+(48..57) | Get-Random -Count 64 | %%{[char]$_}); Set-Content -Path 'C:\DevOps\JFrog\data\etc\security\master.key' -Value $key -NoNewline"
+  )
+  if not exist "C:\DevOps\JFrog\data\etc\security\join.key" (
+    powershell -Command "$key = -join ((65..70)+(48..57) | Get-Random -Count 36 | %%{[char]$_}); Set-Content -Path 'C:\DevOps\JFrog\data\etc\security\join.key' -Value $key -NoNewline"
   )
   docker-compose --project-name devops up -d --build jfrog
   echo.
