@@ -1,0 +1,4 @@
+FROM atlassian/bamboo:latest
+
+# h2.jar
+RUN curl -L -o /opt/atlassian/bamboo/lib/h2.jar https://repo1.maven.org/maven2/com/h2database/h2/2.3.232/h2-2.3.232.jar

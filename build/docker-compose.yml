@@ -1,0 +1,27 @@
+services:
+  bamboo:    
+    container_name: bamboo
+    build:
+      context: .
+      dockerfile: Dockerfile.bamboo
+    ports:
+      - "8085:8085"
+    volumes:
+      - C:/Bamboo/data:/var/atlassian/application-data/bamboo
+    networks:
+      - devops-net
+  bamboo-agent:
+    container_name: bamboo-agent
+    build:
+      context: .
+      dockerfile: Dockerfile.bamboo-agent
+    environment:
+      - BAMBOO_SERVER_URL=http://bamboo:8085
+    volumes:
+      - C:/Bamboo/agent:/home/bamboo-agent
+    networks:
+      - devops-net
+
+networks:
+  devops-net:
+    driver: bridge

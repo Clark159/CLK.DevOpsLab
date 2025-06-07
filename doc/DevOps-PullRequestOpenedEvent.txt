@@ -1,0 +1,60 @@
+// ScriptRunner->Listeners->Create Listener-> Custom listener
+
+// ===== Event =====
+//   PullRequestOpenedEvent
+
+// ===== Script =====
+// import
+import com.atlassian.sal.api.component.ComponentLocator
+import com.atlassian.bitbucket.event.pull.PullRequestOpenedEvent
+import com.atlassian.bitbucket.pull.PullRequestService
+import com.atlassian.bitbucket.pull.PullRequestParticipantStatus
+import com.atlassian.bitbucket.util.PageRequestImpl
+import com.atlassian.bitbucket.user.UserService
+import com.atlassian.bitbucket.user.ApplicationUser
+import com.atlassian.bitbucket.project.ProjectService
+
+// services
+def userService = ComponentLocator.getComponent(UserService)
+def projectService = ComponentLocator.getComponent(ProjectService)
+def pullRequestService = ComponentLocator.getComponent(PullRequestService)
+
+// variables
+def pullRequest = (event as PullRequestOpenedEvent).pullRequest
+def project = pullRequest.toRef.repository.project
+
+// configuration
+def configuration = project.description
+    .readLines()
+    .findAll { it.contains("=") }
+    .collectEntries { line ->
+        def parts = line.split("=", 2)
+        def key = parts[0].trim()
+        def value = parts.length > 1 ? parts[1].trim() : ""
+        [(key): value]
+    }
+String groupName = configuration["AP科員"]
+
+// reviewers.clean
+pullRequest.reviewers.each { reviewer ->    
+    if(reviewer.status != PullRequestParticipantStatus.APPROVED)
+    {
+        pullRequestService.removeReviewer(
+            pullRequest.toRef.repository.id, 
+            pullRequest.id,
+            reviewer.user.name
+        )
+    }    
+}
+
+// reviewers.attach
+def users = userService.findUsersByGroup(groupName, new PageRequestImpl(0, 100)).values
+users.each { ApplicationUser user ->
+    if (user.active && user.name != pullRequest.author.user.name) {
+        pullRequestService.addReviewer(
+            pullRequest.toRef.repository.id, 
+            pullRequest.id,
+            user.name
+        )
+    }
+}
