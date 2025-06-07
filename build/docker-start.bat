@@ -2,9 +2,20 @@
 setlocal enabledelayedexpansion
 
 :: ===== variables =====
+set enablePostgreSQL=true
 set enableBitbucket=true
 set enableBamboo=true
 set enableJFrog=true
+
+:: ===== postgresql =====
+if /i "!enablePostgreSQL!"=="true" (
+  if not exist "C:\DevOps\PostgreSQL\data" (
+    mkdir "C:\DevOps\PostgreSQL\data"
+  )
+  docker-compose --project-name devops up -d --build postgresql
+  echo.
+  echo.
+)
 
 :: ===== bitbucket =====
 if /i "!enableBitbucket!"=="true" (
