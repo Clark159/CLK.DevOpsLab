@@ -15,7 +15,7 @@ if not exist "C:\DevOps\Bamboo\data" (
 :: ===== build =====
 docker-compose --project-name devops up -d --build
 echo Bitbucket started: http://localhost:7990
-echo Bitbucket started: http://localhost:7990
+echo Bamboo started: http://localhost:8085
 echo.
 echo.
 
