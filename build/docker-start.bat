@@ -1,12 +1,15 @@
 @echo off
 setlocal
 
-:: ===== Bamboo =====
-if not exist "C:\Bamboo\data" (
-    mkdir "C:\Bamboo\data"
+
+:: ===== bitbucket =====
+if not exist "C:\DevOps\Bitbucket\data" (
+    mkdir "C:\DevOps\Bitbucket\data"
 )
+
+:: ===== build =====
 docker-compose --project-name devops up -d --build
-echo Bamboo started: http://localhost:8085
+echo Bitbucket started: http://localhost:8085
 echo.
 echo.
 
