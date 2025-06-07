@@ -1,3 +1,4 @@
+# image
 FROM atlassian/bamboo:latest
 
 # h2.jar
