@@ -1,6 +1,10 @@
 @echo off
 setlocal
 
+:: ===== jfrog =====
+if not exist "C:\DevOps\JFrog\data" (
+    mkdir "C:\DevOps\JFrog\data"
+)
 
 :: ===== bitbucket =====
 if not exist "C:\DevOps\Bitbucket\data" (
@@ -13,7 +17,7 @@ if not exist "C:\DevOps\Bamboo\data" (
 )
 
 :: ===== build =====
-docker-compose --project-name devops up -d --build
+docker-compose --project-name devops up -d --build jfrog bitbucket bamboo
 echo Bitbucket started: http://localhost:7990
 echo Bamboo started: http://localhost:8085
 echo.

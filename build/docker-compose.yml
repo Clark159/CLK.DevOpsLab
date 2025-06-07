@@ -1,4 +1,18 @@
 services:
+  jfrog:
+    container_name: jfrog
+    build:
+      context: .
+      dockerfile: Dockerfile.jfrog
+    ports:
+      - "8081:8081" # Web UI
+      - "8082:8082" # Repository Gateway
+    volumes:
+      - C:/DevOps/JFrog/data:/var/opt/jfrog/artifactory
+    networks:
+      - devops-net
+    restart: unless-stopped
+
   bitbucket:
     container_name: bitbucket
     build:
@@ -11,6 +25,8 @@ services:
       - C:/DevOps/Bitbucket/data:/var/atlassian/application-data/bitbucket
     networks:
       - devops-net
+    restart: unless-stopped
+
   bamboo:    
     container_name: bamboo
     build:
@@ -22,6 +38,7 @@ services:
       - C:/DevOps/Bamboo/data:/var/atlassian/application-data/bamboo
     networks:
       - devops-net
+    restart: unless-stopped
 
 networks:
   devops-net:
