@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 
 :: ===== variables =====
-set enableBitbucket=true
+set enableBitbucket=false
 set enableBamboo=false
 set enableJFrog=true
 
