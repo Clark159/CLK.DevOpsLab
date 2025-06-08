@@ -1,5 +1,9 @@
 configVersion: 1
 
+router:
+  entrypoints:
+    enabled: true
+
 shared:
   node:
     id: art1
