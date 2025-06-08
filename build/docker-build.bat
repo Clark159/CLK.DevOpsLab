@@ -43,10 +43,10 @@ if /i "!enableJFrog!"=="true" (
     mkdir "C:\DevOps\JFrog\data\etc\security"
   )
   if not exist "C:\DevOps\JFrog\data\etc\security\master.key" (
-    powershell -Command "$key = -join ((65..70)+(48..57) | Get-Random -Count 64 | ForEach-Object {[char]$_}); Set-Content -Path 'C:\DevOps\JFrog\data\etc\security\master.key' -Value $key -NoNewline"
+    powershell -Command "$key = -join ((65..90)+(97..122)+(48..57) | Get-Random -Count 32 | ForEach-Object {[char]$_}); Set-Content -Path 'C:\DevOps\JFrog\data\etc\security\master.key' -Value $key -NoNewline"
   )
   if not exist "C:\DevOps\JFrog\data\etc\security\join.key" (
-    powershell -Command "$key = -join ((65..70)+(48..57) | Get-Random -Count 36 | ForEach-Object {[char]$_}); Set-Content -Path 'C:\DevOps\JFrog\data\etc\security\join.key' -Value $key -NoNewline"
+    powershell -Command "$key = [guid]::NewGuid().ToString(); Set-Content -Path 'C:\DevOps\JFrog\data\etc\security\join.key' -Value $key -NoNewline"
   )
   docker-compose --project-name devops up -d --build jfrog
   echo.
