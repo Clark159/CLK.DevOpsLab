@@ -1,26 +1,68 @@
 services:
+  postgresql:
+    container_name: postgresql
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: devops
+      POSTGRES_PASSWORD: devops123
+    volumes:
+      - C:/DevOps/PostgreSQL/data:/var/lib/postgresql/data
+      - ./PostgreSQL.sql:/docker-entrypoint-initdb.d/PostgreSQL.sql
+    ports:
+      - "5432:5432" # SQL Connection
+    networks:
+      - devops-net
+    restart: unless-stopped
+
+  bitbucket:
+    container_name: bitbucket
+    image: atlassian/bitbucket:latest
+    ports:
+      - "7990:7990" # Web UI
+      - "7999:7999" # Git SSH
+    volumes:
+      - C:/DevOps/Bitbucket/data:/var/atlassian/application-data/bitbucket
+    networks:
+      - devops-net
+    restart: unless-stopped
+
   bamboo:    
     container_name: bamboo
-    build:
-      context: .
-      dockerfile: Dockerfile.bamboo
+    image: atlassian/bamboo:latest
     ports:
-      - "8085:8085"
+      - "8085:8085" # Web UI
     volumes:
-      - C:/Bamboo/data:/var/atlassian/application-data/bitbucket
+      - C:/DevOps/Bamboo/data:/var/atlassian/application-data/bamboo
     networks:
       - devops-net
-  bamboo-agent:
-    container_name: bamboo-agent
-    build:
-      context: .
-      dockerfile: Dockerfile.bamboo-agent
+    restart: unless-stopped
+
+  jfrog:
+    container_name: jfrog
+    image: releases-docker.jfrog.io/jfrog/artifactory-oss:latest    
+    depends_on:
+      - postgresql
     environment:
-      - BAMBOO_SERVER_URL=http://bamboo:8085
+      - DB_TYPE=postgresql
+      - DB_HOST=postgresql
+      - DB_PORT=5432
+      - DB_USER=devops
+      - DB_PASSWORD=devops123
+      - EXTRA_JDBC_URL_PARAMS=autosave=conservative&prepareThreshold=0
+    ports:
+      - "8081:8081" # Web UI
+      - "8082:8082" # Repository Gateway
     volumes:
-      - C:/Bamboo/agent:/home/bamboo-agent
+      - C:/DevOps/JFrog/data:/var/opt/jfrog/artifactory
     networks:
       - devops-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/artifactory/api/system/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+    restart: unless-stopped
 
 networks:
   devops-net:
