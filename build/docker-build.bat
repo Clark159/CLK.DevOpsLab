@@ -5,7 +5,7 @@ setlocal enabledelayedexpansion
 set enablePostgreSQL=true
 set enableBitbucket=false
 set enableBamboo=false
-set enableJFrog=true
+set enableJFrog=false
 
 :: ===== postgresql =====
 if /i "!enablePostgreSQL!"=="true" (

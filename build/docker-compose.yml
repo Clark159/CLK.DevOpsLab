@@ -40,13 +40,15 @@ services:
   jfrog:
     container_name: jfrog
     image: releases-docker.jfrog.io/jfrog/artifactory-oss:latest    
+    depends_on:
+      - postgresql
     environment:
       - DB_TYPE=postgresql
       - DB_HOST=postgresql
       - DB_PORT=5432
       - DB_USER=devops
       - DB_PASSWORD=devops123
-      - DB_NAME=artifactory
+      - EXTRA_JDBC_URL_PARAMS=autosave=conservative&prepareThreshold=0
     ports:
       - "8081:8081" # Web UI
       - "8082:8082" # Repository Gateway
@@ -54,6 +56,12 @@ services:
       - C:/DevOps/JFrog/data:/var/opt/jfrog/artifactory
     networks:
       - devops-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/artifactory/api/system/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
     restart: unless-stopped
 
 networks:
