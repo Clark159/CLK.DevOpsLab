@@ -3,8 +3,8 @@ setlocal enabledelayedexpansion
 
 :: ===== variables =====
 set enablePostgreSQL=true
-set enableBitbucket=true
-set enableBamboo=true
+set enableBitbucket=false
+set enableBamboo=false
 set enableJFrog=true
 
 :: ===== postgresql =====

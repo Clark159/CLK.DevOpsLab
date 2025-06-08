@@ -39,7 +39,14 @@ services:
 
   jfrog:
     container_name: jfrog
-    image: releases-docker.jfrog.io/jfrog/artifactory-oss:latest
+    image: releases-docker.jfrog.io/jfrog/artifactory-oss:latest    
+    environment:
+      - DB_TYPE=postgresql
+      - DB_HOST=postgresql
+      - DB_PORT=5432
+      - DB_USER=devops
+      - DB_PASSWORD=devops123
+      - DB_NAME=artifactory
     ports:
       - "8081:8081" # Web UI
       - "8082:8082" # Repository Gateway
