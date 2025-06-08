@@ -12,7 +12,7 @@ artifactory:
   database:
     type: postgresql
     driver: org.postgresql.Driver
-    url: jdbc:postgresql://postgresql:5432/jfrog
+    url: "jdbc:postgresql://postgresql:5432/jfrog"
     username: devops
     password: devops123
   server:
@@ -23,7 +23,7 @@ access:
   database:
     type: postgresql
     driver: org.postgresql.Driver
-    url: jdbc:postgresql://postgresql:5432/jfrog
+    url: "jdbc:postgresql://postgresql:5432/jfrog"
     username: devops
     password: devops123
 
@@ -31,6 +31,6 @@ metadata:
   database:
     type: postgresql
     driver: org.postgresql.Driver
-    url: jdbc:postgresql://postgresql:5432/jfrog
+    url: "jdbc:postgresql://postgresql:5432/jfrog"
     username: devops
     password: devops123
