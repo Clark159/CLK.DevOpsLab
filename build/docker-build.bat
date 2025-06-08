@@ -43,7 +43,7 @@ if /i "!enableJFrog!"=="true" (
     mkdir "C:\DevOps\JFrog\data\etc\security"
   )
   if not exist "C:\DevOps\JFrog\data\etc\security\master.key" (
-    powershell -Command "$key = -join ((65..90)+(97..122)+(48..57) | Get-Random -Count 32 | ForEach-Object {[char]$_}); Set-Content -Path 'C:\DevOps\JFrog\data\etc\security\master.key' -Value $key -NoNewline"
+    powershell -Command "$hex = '0123456789ABCDEF'; $key = -join (1..32 | ForEach-Object { $hex[(Get-Random -Maximum 16)] }); Set-Content -Path 'C:\DevOps\JFrog\data\etc\security\master.key' -Value $key -NoNewline"
   )
   if not exist "C:\DevOps\JFrog\data\etc\security\join.key" (
     powershell -Command "$key = [guid]::NewGuid().ToString(); Set-Content -Path 'C:\DevOps\JFrog\data\etc\security\join.key' -Value $key -NoNewline"
