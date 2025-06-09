@@ -1,3 +1,0 @@
-CREATE DATABASE bitbucket OWNER devops;
-CREATE DATABASE bamboo OWNER devops;
-CREATE DATABASE jfrog OWNER devops;
