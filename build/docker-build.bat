@@ -9,7 +9,7 @@ if /i "!enableJFrog!"=="true" (
   if not exist "C:\DevOps\JFrog\data" (
     mkdir "C:\DevOps\JFrog\data"
   )
-  docker-compose --project-name devops up -d --build
+  docker-compose --project-name devops --env-file docker-compose.env up -d --build
   echo.
   echo.
 )
